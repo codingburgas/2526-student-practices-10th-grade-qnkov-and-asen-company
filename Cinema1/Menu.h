@@ -1,6 +1,11 @@
-#pragma once
 #include <iostream>
+#include <vector>
+#include <string>
+
 using namespace std;
-void MainMenu();
-void Start();
-void Help();
+
+void mainMenu();
+void movieMenu();
+void helpMenu();
+void displaySeats(vector<vector<char>>& seats);
+void bookSeat(vector<vector<char>>& seats);
