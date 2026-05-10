@@ -59,9 +59,8 @@ int main()
     // Seats
     vector<vector<char>> seats(5, vector<char>(8, 'O'));
 
-    // Example taken seats
-    seats[0][2] = 'X';
-    seats[2][4] = 'X';
+    // LOAD SAVED SEATS
+    LoadSeats(seats);
 
     // Input
     string seatInput = "";

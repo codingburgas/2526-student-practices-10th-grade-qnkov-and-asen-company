@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include <fstream>
 #include <cctype>
 
 // =====================================================
@@ -77,7 +78,6 @@ void DrawMovieSelection(
 {
     DrawText("SELECT A MOVIE", 300, 40, 45, RED);
 
-    // Movie buttons
     for (int i = 0; i < movies.size(); i++)
     {
         Rectangle movieBtn = { 50, 120 + i * 100, 350, 70 };
@@ -98,9 +98,7 @@ void DrawMovieSelection(
         }
     }
 
-    // =====================================================
-    // MOVIE DETAILS
-    // =====================================================
+    // Movie Details
     if (selectedMovie != -1)
     {
         Movie& movie = movies[selectedMovie];
@@ -133,7 +131,6 @@ void DrawMovieSelection(
             WHITE
         );
 
-        // Stars
         string stars = "";
 
         for (int i = 0; i < movie.stars; i++)
@@ -171,7 +168,7 @@ void DrawMovieSelection(
         }
     }
 
-    // Reserve button
+    // Reserve Button
     Rectangle reserveBtn = { 350, 600, 300, 60 };
 
     DrawRectangleRec(reserveBtn, DARKGREEN);
@@ -197,7 +194,6 @@ void DrawSeatReservation(
 {
     DrawText("RESERVE YOUR SEAT", 250, 40, 45, RED);
 
-    // Draw seats
     for (int row = 0; row < seats.size(); row++)
     {
         for (int col = 0; col < seats[row].size(); col++)
@@ -275,6 +271,9 @@ void DrawSeatReservation(
                 col >= 0 && col < seats[0].size())
             {
                 seats[row][col] = 'X';
+
+                // SAVE SEATS
+                SaveSeats(seats);
             }
         }
 
@@ -292,4 +291,56 @@ void DrawSeatReservation(
     {
         currentScreen = MOVIE_SELECTION;
     }
+}
+
+// =====================================================
+// SAVE SEATS
+// =====================================================
+void SaveSeats(vector<vector<char>>& seats)
+{
+    ofstream file("seats.txt");
+
+    for (int row = 0; row < seats.size(); row++)
+    {
+        for (int col = 0; col < seats[row].size(); col++)
+        {
+            file << seats[row][col];
+        }
+
+        file << endl;
+    }
+
+    file.close();
+}
+
+// =====================================================
+// LOAD SEATS
+// =====================================================
+void LoadSeats(vector<vector<char>>& seats)
+{
+    ifstream file("seats.txt");
+
+    if (!file.is_open())
+    {
+        return;
+    }
+
+    string line;
+
+    int row = 0;
+
+    while (getline(file, line) && row < seats.size())
+    {
+        for (int col = 0;
+            col < line.length() &&
+            col < seats[row].size();
+            col++)
+        {
+            seats[row][col] = line[col];
+        }
+
+        row++;
+    }
+
+    file.close();
 }

@@ -1,3 +1,4 @@
+#pragma once
 #include "raylib.h"
 #include <vector>
 #include <string>
@@ -47,3 +48,8 @@ void DrawSeatReservation(
     vector<vector<char>>& seats,
     string& seatInput
 );
+
+// Save and Load
+void SaveSeats(vector<vector<char>>& seats);
+
+void LoadSeats(vector<vector<char>>& seats);
