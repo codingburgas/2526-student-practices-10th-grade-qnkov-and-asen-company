@@ -1,11 +1,34 @@
-#include <iostream>
+#include "raylib.h"
 #include <vector>
 #include <string>
 
 using namespace std;
 
-void mainMenu();
-void movieMenu();
-void helpMenu();
-void displaySeats(vector<vector<char>>& seats);
-void bookSeat(vector<vector<char>>& seats);
+// Screen size
+const int screenWidth = 1000;
+const int screenHeight = 700;
+
+// App states
+enum ScreenState
+{
+    MAIN_MENU,
+    MOVIE_SELECTION,
+    SEAT_RESERVATION,
+    HELP_SCREEN
+};
+
+// Functions
+void DrawMainMenu(ScreenState& currentScreen);
+void DrawHelpMenu(ScreenState& currentScreen);
+
+void DrawMovieSelection(
+    ScreenState& currentScreen,
+    vector<string>& movies,
+    int& selectedMovie
+);
+
+void DrawSeatReservation(
+    ScreenState& currentScreen,
+    vector<vector<char>>& seats,
+    string& seatInput
+);
