@@ -9,11 +9,49 @@ int main()
     ScreenState currentScreen = MAIN_MENU;
 
     // Movies
-    vector<string> movies =
+    vector<Movie> movies =
     {
-        "Avengers: Endgame",
-        "Spider-Man: No Way Home",
-        "Interstellar"
+        {
+            "Avengers: Endgame",
+            "PG-13",
+            "18:00",
+            "21:00",
+            5,
+            "Kevin Feige",
+            {
+                "Robert Downey Jr.",
+                "Chris Evans",
+                "Scarlett Johansson"
+            }
+        },
+
+        {
+            "Spider-Man: No Way Home",
+            "PG-13",
+            "19:30",
+            "22:00",
+            4,
+            "Kevin Feige",
+            {
+                "Tom Holland",
+                "Zendaya",
+                "Willem Dafoe"
+            }
+        },
+
+        {
+            "Interstellar",
+            "PG-13",
+            "20:00",
+            "23:00",
+            5,
+            "Christopher Nolan",
+            {
+                "Matthew McConaughey",
+                "Anne Hathaway",
+                "Jessica Chastain"
+            }
+        }
     };
 
     int selectedMovie = -1;
@@ -25,12 +63,13 @@ int main()
     seats[0][2] = 'X';
     seats[2][4] = 'X';
 
-    // Seat input
+    // Input
     string seatInput = "";
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
+
         ClearBackground(BLACK);
 
         switch (currentScreen)

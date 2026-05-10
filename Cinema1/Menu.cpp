@@ -6,7 +6,7 @@
 // =====================================================
 void DrawMainMenu(ScreenState& currentScreen)
 {
-    DrawText("WATCH ZONE", 350, 100, 50, RED);
+    DrawText("WATCH ZONE", 320, 80, 55, RED);
 
     Rectangle buyBtn = { 350, 220, 300, 60 };
     Rectangle helpBtn = { 350, 320, 300, 60 };
@@ -71,22 +71,23 @@ void DrawHelpMenu(ScreenState& currentScreen)
 // =====================================================
 void DrawMovieSelection(
     ScreenState& currentScreen,
-    vector<string>& movies,
+    vector<Movie>& movies,
     int& selectedMovie
 )
 {
-    DrawText("SELECT A MOVIE", 300, 60, 45, RED);
+    DrawText("SELECT A MOVIE", 300, 40, 45, RED);
 
+    // Movie buttons
     for (int i = 0; i < movies.size(); i++)
     {
-        Rectangle movieBtn = { 250, 150 + i * 120, 500, 70 };
+        Rectangle movieBtn = { 50, 120 + i * 100, 350, 70 };
 
         DrawRectangleRec(movieBtn,
             selectedMovie == i ? RED : DARKGRAY);
 
-        DrawText(movies[i].c_str(),
-            300,
-            175 + i * 120,
+        DrawText(movies[i].title.c_str(),
+            80,
+            145 + i * 100,
             25,
             WHITE);
 
@@ -97,10 +98,85 @@ void DrawMovieSelection(
         }
     }
 
-    Rectangle reserveBtn = { 350, 550, 300, 60 };
+    // =====================================================
+    // MOVIE DETAILS
+    // =====================================================
+    if (selectedMovie != -1)
+    {
+        Movie& movie = movies[selectedMovie];
+
+        DrawRectangle(470, 120, 450, 420, DARKGRAY);
+
+        DrawText(movie.title.c_str(), 500, 140, 30, YELLOW);
+
+        DrawText(
+            ("Age Rating: " + movie.ageRating).c_str(),
+            500,
+            190,
+            22,
+            WHITE
+        );
+
+        DrawText(
+            ("Starts: " + movie.startTime).c_str(),
+            500,
+            230,
+            22,
+            WHITE
+        );
+
+        DrawText(
+            ("Ends: " + movie.endTime).c_str(),
+            500,
+            270,
+            22,
+            WHITE
+        );
+
+        // Stars
+        string stars = "";
+
+        for (int i = 0; i < movie.stars; i++)
+        {
+            stars += "* ";
+        }
+
+        DrawText(
+            ("Rating: " + stars).c_str(),
+            500,
+            310,
+            22,
+            GOLD
+        );
+
+        DrawText(
+            ("Producer: " + movie.producer).c_str(),
+            500,
+            350,
+            22,
+            WHITE
+        );
+
+        DrawText("Cast:", 500, 390, 24, SKYBLUE);
+
+        for (int i = 0; i < movie.cast.size(); i++)
+        {
+            DrawText(
+                movie.cast[i].c_str(),
+                530,
+                430 + i * 30,
+                20,
+                WHITE
+            );
+        }
+    }
+
+    // Reserve button
+    Rectangle reserveBtn = { 350, 600, 300, 60 };
 
     DrawRectangleRec(reserveBtn, DARKGREEN);
-    DrawText("Reserve Seats", 390, 570, 30, WHITE);
+
+    DrawText("Reserve Seats", 390, 620, 30, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), reserveBtn) &&
         IsMouseButtonPressed(MOUSE_LEFT_BUTTON) &&
@@ -119,7 +195,7 @@ void DrawSeatReservation(
     string& seatInput
 )
 {
-    DrawText("RESERVE YOUR SEAT", 280, 40, 45, RED);
+    DrawText("RESERVE YOUR SEAT", 250, 40, 45, RED);
 
     // Draw seats
     for (int row = 0; row < seats.size(); row++)
@@ -135,25 +211,29 @@ void DrawSeatReservation(
             seatText += seats[row][col];
             seatText += "]";
 
-            DrawText(seatText.c_str(),
+            DrawText(
+                seatText.c_str(),
                 x + 5,
                 y + 12,
                 20,
-                WHITE);
+                WHITE
+            );
 
             string label = "";
             label += char('A' + row);
             label += to_string(col + 1);
 
-            DrawText(label.c_str(),
+            DrawText(
+                label.c_str(),
                 x + 5,
                 y - 25,
                 20,
-                YELLOW);
+                YELLOW
+            );
         }
     }
 
-    // Input
+    // Input box
     DrawText("Type Seat (Example C5):", 320, 550, 25, WHITE);
 
     DrawRectangle(350, 590, 250, 50, LIGHTGRAY);
@@ -186,6 +266,7 @@ void DrawSeatReservation(
         if (seatInput.length() >= 2)
         {
             char rowLetter = toupper(seatInput[0]);
+
             int row = rowLetter - 'A';
 
             int col = stoi(seatInput.substr(1)) - 1;
@@ -203,6 +284,7 @@ void DrawSeatReservation(
     Rectangle backBtn = { 30, 620, 150, 50 };
 
     DrawRectangleRec(backBtn, DARKGRAY);
+
     DrawText("Back", 70, 635, 25, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), backBtn) &&

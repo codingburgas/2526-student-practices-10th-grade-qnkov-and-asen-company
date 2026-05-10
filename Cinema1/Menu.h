@@ -17,13 +17,28 @@ enum ScreenState
     HELP_SCREEN
 };
 
+// Movie structure
+struct Movie
+{
+    string title;
+    string ageRating;
+    string startTime;
+    string endTime;
+    int stars;
+
+    string producer;
+
+    vector<string> cast;
+};
+
 // Functions
 void DrawMainMenu(ScreenState& currentScreen);
+
 void DrawHelpMenu(ScreenState& currentScreen);
 
 void DrawMovieSelection(
     ScreenState& currentScreen,
-    vector<string>& movies,
+    vector<Movie>& movies,
     int& selectedMovie
 );
 
