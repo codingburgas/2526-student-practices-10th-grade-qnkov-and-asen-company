@@ -59,11 +59,14 @@ int main()
     // Seats
     vector<vector<char>> seats(5, vector<char>(8, 'O'));
 
-    // LOAD SAVED SEATS
+    // Load saved seats
     LoadSeats(seats);
 
     // Input
     string seatInput = "";
+
+    // Delete mode
+    bool deleteMode = false;
 
     while (!WindowShouldClose())
     {
@@ -89,7 +92,8 @@ int main()
             DrawSeatReservation(
                 currentScreen,
                 seats,
-                seatInput
+                seatInput,
+                deleteMode
             );
             break;
 

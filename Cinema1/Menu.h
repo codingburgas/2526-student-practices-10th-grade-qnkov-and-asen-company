@@ -46,10 +46,11 @@ void DrawMovieSelection(
 void DrawSeatReservation(
     ScreenState& currentScreen,
     vector<vector<char>>& seats,
-    string& seatInput
+    string& seatInput,
+    bool& deleteMode
 );
 
-// Save and Load
+// Save & Load
 void SaveSeats(vector<vector<char>>& seats);
 
 void LoadSeats(vector<vector<char>>& seats);

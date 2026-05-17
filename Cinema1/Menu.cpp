@@ -1,6 +1,6 @@
-#include "Menu.h"
 #include <fstream>
 #include <cctype>
+#include "Menu.h"
 
 // =====================================================
 // MAIN MENU
@@ -189,11 +189,13 @@ void DrawMovieSelection(
 void DrawSeatReservation(
     ScreenState& currentScreen,
     vector<vector<char>>& seats,
-    string& seatInput
+    string& seatInput,
+    bool& deleteMode
 )
 {
     DrawText("RESERVE YOUR SEAT", 250, 40, 45, RED);
 
+    // Draw seats
     for (int row = 0; row < seats.size(); row++)
     {
         for (int col = 0; col < seats[row].size(); col++)
@@ -215,6 +217,7 @@ void DrawSeatReservation(
                 WHITE
             );
 
+            // Seat labels
             string label = "";
             label += char('A' + row);
             label += to_string(col + 1);
@@ -229,7 +232,7 @@ void DrawSeatReservation(
         }
     }
 
-    // Input box
+    // Input Box
     DrawText("Type Seat (Example C5):", 320, 550, 25, WHITE);
 
     DrawRectangle(350, 590, 250, 50, LIGHTGRAY);
@@ -250,13 +253,14 @@ void DrawSeatReservation(
         key = GetCharPressed();
     }
 
+    // Backspace
     if (IsKeyPressed(KEY_BACKSPACE) &&
         !seatInput.empty())
     {
         seatInput.pop_back();
     }
 
-    // Reserve seat
+    // ENTER pressed
     if (IsKeyPressed(KEY_ENTER))
     {
         if (seatInput.length() >= 2)
@@ -270,9 +274,17 @@ void DrawSeatReservation(
             if (row >= 0 && row < seats.size() &&
                 col >= 0 && col < seats[0].size())
             {
-                seats[row][col] = 'X';
+                // DELETE MODE
+                if (deleteMode)
+                {
+                    seats[row][col] = 'O';
+                }
+                else
+                {
+                    seats[row][col] = 'X';
+                }
 
-                // SAVE SEATS
+                // SAVE
                 SaveSeats(seats);
             }
         }
@@ -280,6 +292,29 @@ void DrawSeatReservation(
         seatInput = "";
     }
 
+    // Delete Mode Button
+    Rectangle deleteBtn = { 750, 620, 200, 50 };
+
+    DrawRectangleRec(
+        deleteBtn,
+        deleteMode ? RED : DARKGRAY
+    );
+
+    DrawText(
+        deleteMode ? "Deleting..." : "Delete Seat",
+        780,
+        635,
+        20,
+        WHITE
+    );
+
+    if (CheckCollisionPointRec(GetMousePosition(), deleteBtn) &&
+        IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        deleteMode = !deleteMode;
+    }
+
+    // Back Button
     Rectangle backBtn = { 30, 620, 150, 50 };
 
     DrawRectangleRec(backBtn, DARKGRAY);
